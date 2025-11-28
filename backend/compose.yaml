@@ -1,0 +1,7 @@
+﻿services:
+  reviewanalyzer:
+    image: reviewanalyzer
+    build:
+      context: .
+      dockerfile: ReviewAnalyzer/Dockerfile
+
