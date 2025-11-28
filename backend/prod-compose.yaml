@@ -1,0 +1,57 @@
+﻿version: "3.9"
+
+services:
+  reviewanalyzer-host:
+    container_name: reviewanalyzer-host
+    depends_on:
+      - postgres-migrations
+    image: reviewanalyzer.host
+    build:
+      context: .
+      dockerfile: ReviewAnalyzer.Host/Dockerfile
+    restart: unless-stopped
+    environment:
+      ConnectionStrings__Postgres: "Host=postgres;Port=5432;Database=${POSTGRES_DB};Username=${POSTGRES_USER};Password=${POSTGRES_PASSWORD}"
+    networks:
+      - ${DOCKER_NETWORK}
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.reviewanalyzer.rule=Host(`api.reviewanalyzer.mixdev.me`)"
+      - "traefik.http.routers.reviewanalyzer.entrypoints=https"
+      - "traefik.http.routers.reviewanalyzer.tls.certresolver=letsencrypt"
+  postgres:
+    image: postgres:16
+    container_name: reviewanalyzer-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - ${DOCKER_NETWORK}
+  postgres-migrations:
+    build:
+      context: .
+      dockerfile: ReviewAnalyzer.PostgreSql.MigrationService/Dockerfile
+    container_name: reviewanalyzer-postgres-migrations
+    depends_on:
+      - postgres
+    environment:
+      ConnectionStrings__Postgres: "Host=postgres;Port=5432;Database=${POSTGRES_DB};Username=${POSTGRES_USER};
+      Password=${POSTGRES_PASSWORD}"
+    networks:
+      - ${DOCKER_NETWORK}
+    restart: no
+#  ml-model:
+#    image: ml-model
+#    build:
+#      context: ./bert_fastapi-master
+#      dockerfile: Dockerfile
+#    container_name: ml-model
+#    restart: unless-stopped
+#    ports:
+#      - "5050:5050"
