@@ -1,7 +1,13 @@
 ﻿services:
   reviewanalyzer:
-    image: reviewanalyzer
+    container_name: reviewanalyzer-host
+    image: reviewanalyzer.host
     build:
       context: .
-      dockerfile: ReviewAnalyzer/Dockerfile
+      dockerfile: ReviewAnalyzer.Host/Dockerfile
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+
+
 

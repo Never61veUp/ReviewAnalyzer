@@ -1,0 +1,41 @@
+﻿using CSharpFunctionalExtensions;
+using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Mvc;
+using ReviewAnalyzer.Application.Services;
+
+namespace ReviewAnalyzer.Host.Controllers;
+
+[ApiController]
+[Route("api/[controller]")]
+public class GroupController : BaseController
+{
+    private readonly IGroupReviewService _groupReviewService;
+
+    public GroupController(IGroupReviewService groupReviewService)
+    {
+        _groupReviewService = groupReviewService;
+    }
+    
+    [HttpPost("upload")]
+    public async Task<IActionResult> UploadCsv(IFormFile file, CancellationToken cancellationToken)
+    {
+        if (file.Length == 0)
+            return BadRequest("File is empty");
+
+        if (!file.FileName.EndsWith(".csv"))
+            return BadRequest("File is not a csv file");
+        
+        byte[] csvBytes;
+        using (var ms = new MemoryStream())
+        {
+            await file.CopyToAsync(ms, cancellationToken);
+            csvBytes = ms.ToArray();
+        }
+
+        // вызываем твой сервис (реальный или мок)
+        var result = _groupReviewService.AddGroupReview(csvBytes, file.FileName, cancellationToken);
+
+        
+        return FromResult(Result.Success());
+    }
+}
