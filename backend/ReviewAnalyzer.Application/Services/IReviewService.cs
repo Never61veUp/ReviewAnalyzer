@@ -10,4 +10,6 @@ public interface IReviewService
     Task<Result<int>> GetReviewCount(CancellationToken cancellationToken = default);
     Task<Result<double>> GetPercentPositiveReview(CancellationToken cancellationToken = default);
     Task<Result<int>> GetPositiveReviewCount(CancellationToken cancellationToken = default);
+    Task<Result<double>> GetPercentPositiveReviewInGroup(Guid groupId, CancellationToken cancellationToken = default);
+    Task<Result<int>> GetPositiveReviewCountInGroup(Guid groupId, CancellationToken cancellationToken = default);
 }

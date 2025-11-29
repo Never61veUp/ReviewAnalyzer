@@ -55,8 +55,16 @@ public class ReviewService : IReviewService
         return Result.Success<IEnumerable<Review>>(reviews);
     }
     
-    public async Task<Result<int>> GetReviewCount(CancellationToken cancellationToken) => await _repository.GetReviewCount(cancellationToken);
+    public async Task<Result<int>> GetReviewCount(CancellationToken cancellationToken) => 
+        await _repository.GetReviewCount(cancellationToken);
     
-    public async Task<Result<double>> GetPercentPositiveReview(CancellationToken cancellationToken) => await _repository.GetPercentPositiveReview(cancellationToken);
-    public async Task<Result<int>> GetPositiveReviewCount(CancellationToken cancellationToken) => await _repository.GetPositiveReviewCount(cancellationToken);
+    public async Task<Result<double>> GetPercentPositiveReview(CancellationToken cancellationToken) => 
+        await _repository.GetPercentPositiveReview(cancellationToken);
+    public async Task<Result<int>> GetPositiveReviewCount(CancellationToken cancellationToken) => 
+        await _repository.GetPositiveReviewCount(cancellationToken);
+    
+    public async Task<Result<double>> GetPercentPositiveReviewInGroup(Guid groupId, CancellationToken cancellationToken) => 
+        await _repository.GetPercentPositiveReviewInGroup(groupId, cancellationToken);
+    public async Task<Result<int>> GetPositiveReviewCountInGroup(Guid groupId, CancellationToken cancellationToken) => 
+        await _repository.GetPositiveReviewCountInGroup(groupId, cancellationToken);
 }

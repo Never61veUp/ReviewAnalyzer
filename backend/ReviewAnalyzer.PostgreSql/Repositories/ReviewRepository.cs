@@ -97,4 +97,29 @@ public class ReviewRepository : IReviewRepository
         var result = await _context.Reviews.Where(r => r.Labels == Label.Позитивный).CountAsync(cancellationToken: cancellationToken);
         return Result.Success(result);
     }
+    
+    public async Task<Result<double>> GetPercentPositiveReviewInGroup(Guid groupId, CancellationToken cancellationToken)
+    {
+        var data = await _context.Reviews
+            .Where(r => r.GroupId == groupId)
+            .GroupBy(_ => 1)
+            .Select(g => new
+            {
+                Total = g.Count(),
+                Positive = g.Count(r => r.Labels == Label.Позитивный)
+            })
+            .FirstOrDefaultAsync(cancellationToken);
+
+        if (data == null || data.Total == 0)
+            return Result.Failure<double>("No records found for the specified group ID.");
+
+        var percent = (double)data.Positive / data.Total * 100;
+        return Result.Success(percent);
+    }
+    
+    public async Task<Result<int>> GetPositiveReviewCountInGroup(Guid groupId, CancellationToken cancellationToken)
+    {
+        var result = await _context.Reviews.Where(r => r.Labels == Label.Позитивный && r.GroupId == groupId).CountAsync(cancellationToken: cancellationToken);
+        return Result.Success(result);
+    }
 }
