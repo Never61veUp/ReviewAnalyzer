@@ -2,7 +2,7 @@
 
 public enum Label
 {
-    Neutral = 0,
-    Positive = 1,
-    Negative = 2,
+    Нейтральный = 0,
+    Позитивный = 1,
+    Негативный = 2,
 }
