@@ -91,4 +91,10 @@ public class ReviewRepository : IReviewRepository
         var percent = data.Total == 0 ? 0 : (double)data.Positive / data.Total * 100;
         return Result.Success(percent);
     }
+    
+    public async Task<Result<int>> GetPositiveReviewCount(CancellationToken cancellationToken)
+    {
+        var result = await _context.Reviews.Where(r => r.Labels == Label.Позитивный).CountAsync(cancellationToken: cancellationToken);
+        return Result.Success(result);
+    }
 }

@@ -11,4 +11,5 @@ public interface IReviewRepository
     Task<Result<IEnumerable<ReviewEntity>>> GetReviewsByTitle(string title, int count = -1, CancellationToken cancellationToken = default);
     Task<Result<int>> GetReviewCount(CancellationToken cancellationToken =  default);
     Task<Result<double>> GetPercentPositiveReview(CancellationToken cancellationToken =  default);
+    Task<Result<int>> GetPositiveReviewCount(CancellationToken cancellationToken = default);
 }
