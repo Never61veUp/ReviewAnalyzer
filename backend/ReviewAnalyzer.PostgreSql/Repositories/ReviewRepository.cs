@@ -81,7 +81,7 @@ public class ReviewRepository : IReviewRepository
             .Select(g => new
             {
                 Total = g.Count(),
-                Positive = g.Count(r => r.Labels == Label.Позитивный)
+                Positive = g.Count(r => r.Labels == Label.Положительный)
             })
             .FirstOrDefaultAsync(cancellationToken);
         
@@ -94,7 +94,7 @@ public class ReviewRepository : IReviewRepository
     
     public async Task<Result<int>> GetPositiveReviewCount(CancellationToken cancellationToken)
     {
-        var result = await _context.Reviews.Where(r => r.Labels == Label.Позитивный).CountAsync(cancellationToken: cancellationToken);
+        var result = await _context.Reviews.Where(r => r.Labels == Label.Положительный).CountAsync(cancellationToken: cancellationToken);
         return Result.Success(result);
     }
     
@@ -106,7 +106,7 @@ public class ReviewRepository : IReviewRepository
             .Select(g => new
             {
                 Total = g.Count(),
-                Positive = g.Count(r => r.Labels == Label.Позитивный)
+                Positive = g.Count(r => r.Labels == Label.Положительный)
             })
             .FirstOrDefaultAsync(cancellationToken);
 
@@ -119,7 +119,7 @@ public class ReviewRepository : IReviewRepository
     
     public async Task<Result<int>> GetPositiveReviewCountInGroup(Guid groupId, CancellationToken cancellationToken)
     {
-        var result = await _context.Reviews.Where(r => r.Labels == Label.Позитивный && r.GroupId == groupId).CountAsync(cancellationToken: cancellationToken);
+        var result = await _context.Reviews.Where(r => r.Labels == Label.Положительный && r.GroupId == groupId).CountAsync(cancellationToken: cancellationToken);
         return Result.Success(result);
     }
 }
