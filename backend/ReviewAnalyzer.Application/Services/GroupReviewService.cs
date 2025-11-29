@@ -41,7 +41,7 @@ public class GroupReviewService : IGroupReviewService
         {
             Id = Guid.NewGuid(),
             Text = r.text,
-            Labels = (Label)r.labels,
+            Labels = Enum.Parse<Label>(r.labels),
             Confidence = r.confidence,
             GroupId = groupEntity.Id,
             Index = r.ID,
@@ -87,7 +87,7 @@ public class GroupReviewService : IGroupReviewService
         public int ID { get; set; }
         public string text { get; set; }
         public string src { get; set; }
-        public int labels { get; set; }
+        public string labels { get; set; }
         public double confidence { get; set; }
     }
 }
