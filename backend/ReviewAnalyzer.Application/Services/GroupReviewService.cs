@@ -21,13 +21,13 @@ public class GroupReviewService : IGroupReviewService
         _groupRepository = groupRepository;
     }
 
-    public async Task<Result> AddGroupReview(byte[] csvBytes, string fileName, CancellationToken cancellationToken)
+    public async Task<Result<Guid>> AddGroupReview(byte[] csvBytes, string fileName, CancellationToken cancellationToken)
     {
         var csvResult = await _processReview.AnalyzeCsvAsync(csvBytes, fileName, cancellationToken);
         var input = ParseCsv(csvResult.Value);
 
         if(input.Count == 0)
-            return Result.Failure("ml service error");
+            return Result.Failure<Guid>("ml service error");
         
         var groupEntity = new ReviewGroupEntity()
         {
@@ -52,9 +52,9 @@ public class GroupReviewService : IGroupReviewService
         
         var result = await _groupRepository.AddGroupAsync(groupEntity, cancellationToken);
         if (result.IsFailure)
-            return Result.Failure(result.Error);
+            return Result.Failure<Guid>(result.Error);
         
-        return Result.Success("Group review added");
+        return Result.Success<Guid>(groupEntity.Id);
     }
 
     public async Task<Result<IEnumerable<ReviewGroupEntity>>> GetAllGroups(CancellationToken cancellationToken)
