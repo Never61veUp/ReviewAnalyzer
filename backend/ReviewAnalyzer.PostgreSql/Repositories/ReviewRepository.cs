@@ -13,10 +13,12 @@ public class ReviewRepository : IReviewRepository
         _context = context;
     }
 
-    public async Task<Result<IEnumerable<ReviewEntity>>> GetReviewsByGroupId(Guid groupId, CancellationToken cancellationToken)
+    public async Task<Result<IEnumerable<ReviewEntity>>> GetReviewsByGroupId(Guid groupId, int count, CancellationToken cancellationToken)
     {
         var reviewEntities = await _context.Reviews.AsNoTracking()
-            .Where(r => r.Group!.Id == groupId)
+            .Where(r => r.GroupId == groupId)
+            .OrderBy(r => r.Index)
+            .Take(count)
             .ToListAsync(cancellationToken: cancellationToken);
 
         if (reviewEntities.Count == 0)

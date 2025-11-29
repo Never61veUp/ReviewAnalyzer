@@ -13,6 +13,7 @@ services.AddScoped<IProcessReview, ProcessReviewMoq>();
 services.AddScoped<IGroupReviewService, GroupReviewService>();
 services.AddScoped<IGroupRepository, GroupRepository>();
 services.AddScoped<IReviewRepository, ReviewRepository>();
+services.AddScoped<IReviewService, ReviewService>();
 
 builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
