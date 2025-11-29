@@ -13,7 +13,7 @@ public class ReviewService : IReviewService
         _repository = repository;
     }
 
-    public async Task<Result<IEnumerable<Review>>> GetByGroupId(Guid groupId, int count, CancellationToken cancellationToken)
+    public async Task<Result<IEnumerable<Review>>> GetByGroupId(Guid groupId, CancellationToken cancellationToken, int count = 0)
     {
         var reviewsResult = await _repository.GetReviewsByGroupId(groupId, count, cancellationToken);
         if(reviewsResult.IsFailure)
@@ -34,7 +34,7 @@ public class ReviewService : IReviewService
         return Result.Success<IEnumerable<Review>>(reviews);
     }
 
-    public async Task<Result<IEnumerable<Review>>> FilterTitle(string title, int count, CancellationToken cancellationToken)
+    public async Task<Result<IEnumerable<Review>>> FilterTitle(string title, CancellationToken cancellationToken, int count = 0)
     {
         var reviewsResult = await _repository.GetReviewsByTitle(title, count, cancellationToken);
         if(reviewsResult.IsFailure)

@@ -15,16 +15,36 @@ public class ReviewController : BaseController
     }
 
     [HttpGet("{groupId:guid}")]
-    public async Task<IActionResult> Get(Guid groupId, int count, CancellationToken cancellationToken)
+    public async Task<IActionResult> Get(Guid groupId, int count = -1, CancellationToken cancellationToken = default)
     {
-        var result = await _service.GetByGroupId(groupId, count, cancellationToken);
+        var result = await _service.GetByGroupId(groupId, cancellationToken, count);
         return FromResult(result);
     }
     
     [HttpGet("by-title/{title}")]
-    public async Task<IActionResult> Get(string title, int count, CancellationToken cancellationToken)
+    public async Task<IActionResult> Get(string title, int count = -1, CancellationToken cancellationToken = default)
     {
-        var result = await _service.FilterTitle(title, count, cancellationToken);
+        var result = await _service.FilterTitle(title, cancellationToken, count);
         return FromResult(result);
+    }
+    
+    [HttpGet("export-stream")]
+    public async Task ExportStream(Guid groupId, CancellationToken cancellationToken)
+    {
+        var reviewsResult = await _service.GetByGroupId(groupId, cancellationToken);
+
+        Response.ContentType = "text/csv";
+        Response.Headers.Append("Content-Disposition", "attachment; filename=reviews.csv");
+
+        await using var writer = new StreamWriter(Response.Body);
+
+        await writer.WriteLineAsync("Id,Text,Score");
+
+        foreach (var r in reviewsResult.Value)
+        {
+            var row = $"{r.Id},\"{r.Text.Replace("\"","\"\"")}\",{r.Label}";
+            await writer.WriteLineAsync(row);
+            await writer.FlushAsync(cancellationToken);
+        }
     }
 }
