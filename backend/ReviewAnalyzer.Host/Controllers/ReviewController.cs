@@ -38,11 +38,11 @@ public class ReviewController : BaseController
 
         await using var writer = new StreamWriter(Response.Body);
 
-        await writer.WriteLineAsync("Id,Text,Score");
+        await writer.WriteLineAsync("Id,Text,Label,Src,Confidence");
 
         foreach (var r in reviewsResult.Value)
         {
-            var row = $"{r.Id},\"{r.Text.Replace("\"","\"\"")}\",{r.Label}";
+            var row = $"{r.Id},\"{r.Text.Replace("\"","\"\"")}\",{r.Label},{r.Src},{r.Confidence}";
             await writer.WriteLineAsync(row);
             await writer.FlushAsync(cancellationToken);
         }
