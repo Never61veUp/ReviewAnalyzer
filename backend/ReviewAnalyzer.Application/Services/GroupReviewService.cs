@@ -34,7 +34,8 @@ public class GroupReviewService : IGroupReviewService
             Date = DateTime.UtcNow,
             Id = Guid.NewGuid(),
             Name = fileName,
-            Reviews = []
+            Reviews = [],
+            ReviewCount =  input.Count,
         };
         
         var listReview = input.Select(r => new ReviewEntity()
@@ -46,7 +47,8 @@ public class GroupReviewService : IGroupReviewService
             GroupId = groupEntity.Id,
             Index = r.ID,
             Src = r.src,
-            Group = groupEntity
+            Group = groupEntity,
+            
         });
         groupEntity.Reviews.AddRange(listReview);
         
