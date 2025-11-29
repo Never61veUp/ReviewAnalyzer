@@ -6,6 +6,8 @@ FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["ReviewAnalyzer.PostgreSql.MigrationService/ReviewAnalyzer.PostgreSql.MigrationService.csproj", "ReviewAnalyzer.PostgreSql.MigrationService/"]
+COPY ["ReviewAnalyzer.PostgreSql/ReviewAnalyzer.PostgreSql.csproj", "ReviewAnalyzer.PostgreSql/"]
+COPY ["ReviewAnalyzer.Core/ReviewAnalyzer.Core.csproj", "ReviewAnalyzer.Core/"]
 RUN dotnet restore "ReviewAnalyzer.PostgreSql.MigrationService/ReviewAnalyzer.PostgreSql.MigrationService.csproj"
 COPY . .
 WORKDIR "/src/ReviewAnalyzer.PostgreSql.MigrationService"

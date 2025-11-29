@@ -34,6 +34,7 @@ services:
     networks:
       - osccowgkgkkkwwkgcg448ggc
   postgres-migrations:
+    image: reviewanalyzer.postgresql.migrationservice
     build:
       context: .
       dockerfile: ReviewAnalyzer.PostgreSql.MigrationService/Dockerfile
