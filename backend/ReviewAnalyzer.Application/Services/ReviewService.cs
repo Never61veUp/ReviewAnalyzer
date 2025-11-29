@@ -56,4 +56,6 @@ public class ReviewService : IReviewService
     }
     
     public async Task<Result<int>> GetReviewCount(CancellationToken cancellationToken) => await _repository.GetReviewCount(cancellationToken);
+    
+    public async Task<Result<double>> GetPercentPositiveReview(CancellationToken cancellationToken) => await _repository.GetPercentPositiveReview(cancellationToken);
 }

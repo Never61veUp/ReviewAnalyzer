@@ -1,5 +1,6 @@
 ﻿using CSharpFunctionalExtensions;
 using Microsoft.EntityFrameworkCore;
+using ReviewAnalyzer.Core.Model;
 using ReviewAnalyzer.PostgreSql.Model;
 
 namespace ReviewAnalyzer.PostgreSql.Repositories;
@@ -71,5 +72,23 @@ public class ReviewRepository : IReviewRepository
     {
         var result = await _context.Reviews.CountAsync(cancellationToken: cancellationToken);
         return Result.Success(result);
+    }
+    
+    public async Task<Result<double>> GetPercentPositiveReview(CancellationToken cancellationToken)
+    {
+        var data = await _context.Reviews
+            .GroupBy(r => 1)
+            .Select(g => new
+            {
+                Total = g.Count(),
+                Positive = g.Count(r => r.Labels == Label.Позитивный)
+            })
+            .FirstOrDefaultAsync(cancellationToken);
+        
+        if(data == null || data.Total == 0)
+            return Result.Failure<double>("No records found for the specified group ID.");
+        
+        var percent = data.Total == 0 ? 0 : (double)data.Positive / data.Total * 100;
+        return Result.Success(percent);
     }
 }
