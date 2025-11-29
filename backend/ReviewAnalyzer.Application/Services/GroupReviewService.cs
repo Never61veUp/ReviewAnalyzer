@@ -27,7 +27,7 @@ public class GroupReviewService : IGroupReviewService
 
         var groupEntity = new ReviewGroupEntity()
         {
-            Date = DateTime.Now,
+            Date = DateTime.UtcNow,
             Id = Guid.NewGuid(),
             Name = fileName,
             Reviews = []
@@ -51,9 +51,11 @@ public class GroupReviewService : IGroupReviewService
         return Result.Success("Group review added");
     }
 
-    public async Task<Result> GetAllGroups(CancellationToken cancellationToken)
+    public async Task<Result<IEnumerable<ReviewGroupEntity>>> GetAllGroups(CancellationToken cancellationToken)
     {
         var result = await _groupRepository.GetAllGroupsWithoutReviews();
+        if(result.IsFailure)
+            return Result.Failure<IEnumerable<ReviewGroupEntity>>(result.Error);
         
         return Result.Success(result.Value);
     }

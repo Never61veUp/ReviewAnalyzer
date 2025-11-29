@@ -28,10 +28,20 @@ public class GroupRepository : IGroupRepository
     
     public async Task<Result> AddGroupAsync(ReviewGroupEntity groupEntity, CancellationToken cancellationToken)
     {
+        var reviews = groupEntity.Reviews.ToList(); // копируем ревью
+        groupEntity.Reviews.Clear();               // убираем из навигации
+
         await _context.ReviewGroups.AddAsync(groupEntity, cancellationToken);
-        var result = await _context.SaveChangesAsync(cancellationToken);
-        if(result <= 0)
-            return Result.Failure("Failed to save the group.");
+        await _context.SaveChangesAsync(cancellationToken);
+
+// Добавляем Reviews партиями
+        const int batchSize = 1000;
+        for (int i = 0; i < reviews.Count; i += batchSize)
+        {
+            var batch = reviews.Skip(i).Take(batchSize).ToList();
+            await _context.Reviews.AddRangeAsync(batch, cancellationToken);
+            await _context.SaveChangesAsync(cancellationToken);
+        }
         
         return Result.Success();
     }

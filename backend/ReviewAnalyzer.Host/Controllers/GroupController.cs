@@ -42,7 +42,7 @@ public class GroupController : BaseController
     [HttpGet]
     public async Task<IActionResult> GetGroupsWithoutReviews(CancellationToken cancellationToken)
     {
-        await _groupReviewService.GetAllGroups(cancellationToken);
-        return Ok();
+        var result = await _groupReviewService.GetAllGroups(cancellationToken);
+        return FromResult(result);
     }
 }
