@@ -25,6 +25,9 @@ public class GroupReviewService : IGroupReviewService
         var csvResult = await _processReview.AnalyzeCsvAsync(csvBytes, fileName, cancellationToken);
         var input = ParseCsv(csvResult.Value);
 
+        if(input.Count == 0)
+            return Result.Failure("No group reviews found");
+        
         var groupEntity = new ReviewGroupEntity()
         {
             Date = DateTime.UtcNow,
