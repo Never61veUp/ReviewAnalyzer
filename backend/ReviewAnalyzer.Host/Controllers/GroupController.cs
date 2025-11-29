@@ -38,4 +38,11 @@ public class GroupController : BaseController
         
         return FromResult(Result.Success());
     }
+
+    [HttpGet]
+    public async Task<IActionResult> GetGroupsWithoutReviews(CancellationToken cancellationToken)
+    {
+        await _groupReviewService.GetAllGroups(cancellationToken);
+        return Ok();
+    }
 }

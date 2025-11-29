@@ -4,26 +4,58 @@ using System.Text.RegularExpressions;
 using CSharpFunctionalExtensions;
 using CsvHelper;
 using CsvHelper.Configuration;
+using ReviewAnalyzer.PostgreSql.Model;
+using ReviewAnalyzer.PostgreSql.Repositories;
 
 namespace ReviewAnalyzer.Application.Services;
 
 public class GroupReviewService : IGroupReviewService
 {
     private readonly IProcessReview _processReview;
+    private readonly IGroupRepository _groupRepository;
 
-    public GroupReviewService(IProcessReview processReview)
+    public GroupReviewService(IProcessReview processReview, IGroupRepository groupRepository)
     {
         _processReview = processReview;
+        _groupRepository = groupRepository;
     }
 
     public async Task<Result> AddGroupReview(byte[] csvBytes, string fileName, CancellationToken cancellationToken)
     {
         var csvResult = await _processReview.AnalyzeCsvAsync(csvBytes, fileName, cancellationToken);
         var input = ParseCsv(csvResult.Value);
+
+        var groupEntity = new ReviewGroupEntity()
+        {
+            Date = DateTime.Now,
+            Id = Guid.NewGuid(),
+            Name = fileName,
+            Reviews = []
+        };
         
+        var listReview = input.Select(r => new ReviewEntity()
+        {
+            Id = Guid.NewGuid(),
+            Text = r.text,
+            Confidence = 1,
+            GroupId = groupEntity.Id,
+            Index = r.ID,
+            Src = r.src,
+        });
+        groupEntity.Reviews.AddRange(listReview);
         
+        var result = await _groupRepository.AddGroupAsync(groupEntity, cancellationToken);
+        if (result.IsFailure)
+            return Result.Failure(result.Error);
         
-        return Result.Success();
+        return Result.Success("Group review added");
+    }
+
+    public async Task<Result> GetAllGroups(CancellationToken cancellationToken)
+    {
+        var result = await _groupRepository.GetAllGroupsWithoutReviews();
+        
+        return Result.Success(result.Value);
     }
     
     public List<ReviewInput> ParseCsv(byte[] bytes)
