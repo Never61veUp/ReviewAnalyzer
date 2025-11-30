@@ -117,9 +117,9 @@ public class ReviewRepository : IReviewRepository
         return Result.Success(percent);
     }
     
-    public async Task<Result<int>> GetPositiveReviewCountInGroup(Guid groupId, CancellationToken cancellationToken)
+    public async Task<Result<int>> GetLabelReviewCountInGroup(Guid groupId, CancellationToken cancellationToken, Label label = Label.Положительный)
     {
-        var result = await _context.Reviews.Where(r => r.Labels == Label.Положительный && r.GroupId == groupId).CountAsync(cancellationToken: cancellationToken);
+        var result = await _context.Reviews.Where(r => r.Labels == label && r.GroupId == groupId).CountAsync(cancellationToken: cancellationToken);
         return Result.Success(result);
     }
 }

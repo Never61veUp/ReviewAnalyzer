@@ -1,4 +1,5 @@
 ﻿using CSharpFunctionalExtensions;
+using ReviewAnalyzer.Core.Model;
 using ReviewAnalyzer.PostgreSql.Model;
 
 namespace ReviewAnalyzer.PostgreSql.Repositories;
@@ -12,6 +13,6 @@ public interface IReviewRepository
     Task<Result<int>> GetReviewCount(CancellationToken cancellationToken =  default);
     Task<Result<double>> GetPercentPositiveReview(CancellationToken cancellationToken =  default);
     Task<Result<int>> GetPositiveReviewCount(CancellationToken cancellationToken = default);
-    Task<Result<int>> GetPositiveReviewCountInGroup(Guid groupId, CancellationToken cancellationToken = default);
+    Task<Result<int>> GetLabelReviewCountInGroup(Guid groupId, CancellationToken cancellationToken = default, Label label = Label.Положительный);
     Task<Result<double>> GetPercentPositiveReviewInGroup(Guid groupId, CancellationToken cancellationToken = default);
 }

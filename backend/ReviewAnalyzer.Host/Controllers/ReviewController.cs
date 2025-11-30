@@ -1,6 +1,7 @@
 ﻿using CSharpFunctionalExtensions;
 using Microsoft.AspNetCore.Mvc;
 using ReviewAnalyzer.Application.Services;
+using ReviewAnalyzer.Core.Model;
 
 namespace ReviewAnalyzer.Host.Controllers;
 
@@ -65,9 +66,9 @@ public class ReviewController : BaseController
     public async Task<IActionResult> GetPercentPositiveReview(Guid groupId, CancellationToken cancellationToken = default) => 
         FromResult(await _service.GetPercentPositiveReviewInGroup(groupId, cancellationToken));
     
-    [HttpGet("review-positive-count-in-group{groupId:guid}")]
-    public async Task<IActionResult> GetPositiveReviewCountInGroup(Guid groupId, CancellationToken cancellationToken = default) => 
-        FromResult(await _service.GetPositiveReviewCountInGroup(groupId, cancellationToken));
+    [HttpGet("review-label-count-in-group{groupId:guid}")]
+    public async Task<IActionResult> GetPositiveReviewCountInGroup(Guid groupId, Label label = Label.Положительный, CancellationToken cancellationToken = default) => 
+        FromResult(await _service.GetLabelReviewCountInGroup(groupId, cancellationToken, label));
     
         
 }
