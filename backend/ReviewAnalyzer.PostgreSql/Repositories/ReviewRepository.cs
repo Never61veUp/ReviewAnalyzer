@@ -129,7 +129,7 @@ public class ReviewRepository : IReviewRepository
     {
         var satisfactionBySrc = await _context.Reviews
             .Where(r => r.GroupId == groupId)
-            .GroupBy(r => r.Src)
+            .GroupBy(r => r.Src).Take(8)
             .Select(g => new
             {
                 Src = g.Key,
