@@ -63,8 +63,8 @@ public class ReviewService : IReviewService
     public async Task<Result<int>> GetPositiveReviewCount(CancellationToken cancellationToken) => 
         await _repository.GetPositiveReviewCount(cancellationToken);
     
-    public async Task<Result<double>> GetPercentPositiveReviewInGroup(Guid groupId, CancellationToken cancellationToken) => 
-        await _repository.GetPercentPositiveReviewInGroup(groupId, cancellationToken);
+    public async Task<Result<double>> GetPercentPositiveReviewInGroup(Guid groupId, CancellationToken cancellationToken, int neutralCoeff = 0) => 
+        await _repository.GetPercentPositiveReviewInGroup(groupId, cancellationToken, neutralCoeff);
     public async Task<Result<int>> GetLabelReviewCountInGroup(Guid groupId, CancellationToken cancellationToken, Label label) => 
         await _repository.GetLabelReviewCountInGroup(groupId, cancellationToken, label);
     

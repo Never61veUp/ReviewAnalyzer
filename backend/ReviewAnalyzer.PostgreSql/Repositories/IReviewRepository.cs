@@ -13,7 +13,8 @@ public interface IReviewRepository
     Task<Result<int>> GetReviewCount(CancellationToken cancellationToken =  default);
     Task<Result<double>> GetPercentPositiveReview(CancellationToken cancellationToken =  default);
     Task<Result<int>> GetPositiveReviewCount(CancellationToken cancellationToken = default);
-    Task<Result<int>> GetLabelReviewCountInGroup(Guid groupId, CancellationToken cancellationToken = default, Label label = Label.Положительный);
-    Task<Result<double>> GetPercentPositiveReviewInGroup(Guid groupId, CancellationToken cancellationToken = default);
+    Task<Result<int>> GetLabelReviewCountInGroup(Guid groupId, CancellationToken 
+        cancellationToken = default, Label label = Label.Положительный);
+    Task<Result<double>> GetPercentPositiveReviewInGroup(Guid groupId, CancellationToken cancellationToken = default, int neutralCoeff = 0);
     Task<Result<Dictionary<string, double>>> GetPositiveSrcPercentList(Guid groupId, CancellationToken cancellationToken =  default);
 }

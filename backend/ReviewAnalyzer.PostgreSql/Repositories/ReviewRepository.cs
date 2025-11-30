@@ -98,7 +98,7 @@ public class ReviewRepository : IReviewRepository
         return Result.Success(result);
     }
     
-    public async Task<Result<double>> GetPercentPositiveReviewInGroup(Guid groupId, CancellationToken cancellationToken)
+    public async Task<Result<double>> GetPercentPositiveReviewInGroup(Guid groupId, CancellationToken cancellationToken, int neutralCoeff = 0)
     {
         var data = await _context.Reviews
             .Where(r => r.GroupId == groupId)
@@ -106,18 +106,20 @@ public class ReviewRepository : IReviewRepository
             .Select(g => new
             {
                 Total = g.Count(),
-                Positive = g.Count(r => r.Labels == Label.Положительный)
+                Positive = g.Count(r => r.Labels == Label.Положительный),
+                Neutral = g.Count(r => r.Labels == Label.Нейтральный)
             })
             .FirstOrDefaultAsync(cancellationToken);
 
         if (data == null || data.Total == 0)
             return Result.Failure<double>("No records found for the specified group ID.");
 
-        var percent = (double)data.Positive / data.Total * 100;
+        var percent = ((double)data.Positive + (double)data.Neutral * neutralCoeff) / data.Total * 100;
         return Result.Success(percent);
     }
     
-    public async Task<Result<int>> GetLabelReviewCountInGroup(Guid groupId, CancellationToken cancellationToken, Label label = Label.Положительный)
+    public async Task<Result<int>> GetLabelReviewCountInGroup(Guid groupId, CancellationToken 
+        cancellationToken, Label label = Label.Положительный)
     {
         var result = await _context.Reviews.Where(r => r.Labels == label && r.GroupId == groupId).CountAsync(cancellationToken: cancellationToken);
         return Result.Success(result);
