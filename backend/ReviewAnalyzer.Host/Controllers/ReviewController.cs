@@ -78,7 +78,7 @@ public class ReviewController : BaseController
     [HttpGet("review-one")]
     public async Task<IActionResult> ParseOneReview(string review, CancellationToken cancellationToken = default)
     {
-        var id = Guid.NewGuid();
+        var id = 1;
         var src = "user_input";
         
         var safeText = review.Replace("\"", "\"\"");
