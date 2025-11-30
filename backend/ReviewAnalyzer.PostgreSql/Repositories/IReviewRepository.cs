@@ -12,7 +12,7 @@ public interface IReviewRepository
     Task<Result<IEnumerable<ReviewEntity>>> GetReviewsByTitle(string title, int count = -1, CancellationToken cancellationToken = default);
     Task<Result<int>> GetReviewCount(CancellationToken cancellationToken =  default);
     Task<Result<double>> GetPercentPositiveReview(CancellationToken cancellationToken =  default);
-    Task<Result<int>> GetPositiveReviewCount(CancellationToken cancellationToken = default);
+    Task<Result<int>> GetLabelReviewCount(CancellationToken cancellationToken = default, Label label = Label.Положительный);
     Task<Result<int>> GetLabelReviewCountInGroup(Guid groupId, CancellationToken 
         cancellationToken = default, Label label = Label.Положительный);
     Task<Result<double>> GetPercentPositiveReviewInGroup(Guid groupId, CancellationToken cancellationToken = default, int neutralCoeff = 0);
