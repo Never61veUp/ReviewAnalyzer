@@ -34,6 +34,8 @@ https://api.reviewanalyzer.mixdev.me/scalar/v1
 ![Главная страница](frontend/src/assets/home.jpg)
 ![Главная страница](frontend/src/assets/single.jpg)
 ![Главная страница](frontend/src/assets/bath.jpg)
+![Главная страница](frontend/src/assets/mobileversion.jpg)
+![Главная страница](frontend/src/assets/home-dark.jpg)
 На странице также представлены:  
 - ключевые показатели  
 - список последних анализов  
@@ -44,6 +46,7 @@ https://api.reviewanalyzer.mixdev.me/scalar/v1
 Страница, показывающая подробный результат анализа конкретной группы отзывов.
 ![Анализ страница](frontend/src/assets/analysis.jpg)
 ![Анализ страница](frontend/src/assets/analysis2.jpg)
+![Анализ страница](frontend/src/assets/analisys-dark.jpg)
 ---
 
 ## Стек
