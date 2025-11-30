@@ -1,5 +1,6 @@
 ﻿using CSharpFunctionalExtensions;
 using ReviewAnalyzer.Core.Model;
+using ReviewAnalyzer.PostgreSql.Model;
 using ReviewAnalyzer.PostgreSql.Repositories;
 
 namespace ReviewAnalyzer.Application.Services;
@@ -7,10 +8,12 @@ namespace ReviewAnalyzer.Application.Services;
 public class ReviewService : IReviewService
 {
     private readonly IReviewRepository _repository;
+    private readonly IProcessReview _processReview;
 
-    public ReviewService(IReviewRepository repository)
+    public ReviewService(IReviewRepository repository, IProcessReview processReview)
     {
         _repository = repository;
+        _processReview = processReview;
     }
 
     public async Task<Result<IEnumerable<Review>>> GetByGroupId(Guid groupId, CancellationToken cancellationToken, int count = 0)
@@ -70,4 +73,21 @@ public class ReviewService : IReviewService
     
     public async Task<Result<Dictionary<string, double>>> GetPositiveSrcPercentList(Guid groupId, CancellationToken cancellationToken) => 
         await _repository.GetPositiveSrcPercentList(groupId, cancellationToken);
+
+    public async Task<Result<Review>> ParseOneReview(string review, CancellationToken cancellationToken = default)
+    {
+        var bytes = System.Text.Encoding.UTF8.GetBytes(review);
+        var csvResult = await _processReview.AnalyzeCsvAsync(bytes, "", cancellationToken);
+        var input = CsvParser.ParseCsv(csvResult.Value);
+        if(input.Count == 0)
+            return Result.Failure<Review>("ml service error");
+        
+        var r = input[0];
+        
+        if (!Enum.TryParse<Label>(r.labels, out var label))
+            return Result.Failure<Review>($"Unknown label '{r.labels}'");
+        
+        var reviewResult = Review.Create(r.text, label, r.src, r.confidence,  Guid.Empty);
+        return reviewResult;
+    }
 }

@@ -73,6 +73,11 @@ public class ReviewController : BaseController
     [HttpGet("review-src-positive-percent{groupId:guid}")]
     public async Task<IActionResult> GetPositiveReviewCountInGroup(Guid groupId, CancellationToken cancellationToken = default) => 
         FromResult(await _service.GetPositiveSrcPercentList(groupId, cancellationToken));
-    
-        
+
+    [HttpGet("review-one")]
+    public async Task<IActionResult> ParseOneReview(string review, CancellationToken cancellationToken = default)
+    {
+        var result = await _service.ParseOneReview(review, cancellationToken);
+        return FromResult(result);
+    }
 }

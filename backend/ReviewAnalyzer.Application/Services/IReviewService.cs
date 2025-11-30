@@ -16,4 +16,6 @@ public interface IReviewService
 
     Task<Result<Dictionary<string, double>>> GetPositiveSrcPercentList(Guid groupId,
         CancellationToken cancellationToken = default);
+
+    Task<Result<Review>> ParseOneReview(string review, CancellationToken cancellationToken = default);
 }

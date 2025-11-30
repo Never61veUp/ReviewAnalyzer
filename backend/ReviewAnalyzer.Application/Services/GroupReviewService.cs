@@ -24,7 +24,7 @@ public class GroupReviewService : IGroupReviewService
     public async Task<Result<Guid>> AddGroupReview(byte[] csvBytes, string fileName, CancellationToken cancellationToken)
     {
         var csvResult = await _processReview.AnalyzeCsvAsync(csvBytes, fileName, cancellationToken);
-        var input = ParseCsv(csvResult.Value);
+        var input = CsvParser.ParseCsv(csvResult.Value);
 
         if(input.Count == 0)
             return Result.Failure<Guid>("ml service error");
@@ -71,21 +71,7 @@ public class GroupReviewService : IGroupReviewService
         return Result.Success(groups);
     }
     
-    public List<ReviewInput> ParseCsv(byte[] bytes)
-    {
-        using var stream = new MemoryStream(bytes);
-        using var reader = new StreamReader(stream);
-
-        var config = new CsvConfiguration(CultureInfo.InvariantCulture)
-        {
-            HasHeaderRecord = true,
-            Delimiter = ","
-        };
-
-        using var csv = new CsvReader(reader, config);
-
-        return csv.GetRecords<ReviewInput>().ToList();
-    }
+    
     
     public class ReviewInput
     {
