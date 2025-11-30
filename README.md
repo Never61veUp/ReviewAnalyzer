@@ -1,7 +1,7 @@
 # Web Application Russian Sentiment Analysis with BERT
 [Документация](https://api.reviewanalyzer.mixdev.me/scalar/v1)
 
-#[Frontend](https://reviewanalyzer.mixdev.me/)
+[Frontend](https://reviewanalyzer.mixdev.me/)
 
 [ML Веса моделей](https://drive.google.com/drive/folders/1cfy1PFzuD0UBB1Z62qToghM4RsJlGPmC?usp=sharing)
 
