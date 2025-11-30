@@ -122,4 +122,22 @@ public class ReviewRepository : IReviewRepository
         var result = await _context.Reviews.Where(r => r.Labels == label && r.GroupId == groupId).CountAsync(cancellationToken: cancellationToken);
         return Result.Success(result);
     }
+
+    public async Task<Result<Dictionary<string, double>>> GetPositiveSrcPercentList(Guid groupId, CancellationToken cancellationToken)
+    {
+        var satisfactionBySrc = await _context.Reviews
+            .Where(r => r.GroupId == groupId)
+            .GroupBy(r => r.Src)
+            .Select(g => new
+            {
+                Src = g.Key,
+                Percent = (g.Count(r => r.Labels == Label.Положительный) / (double)g.Count()) * 100
+            })
+            .ToDictionaryAsync(x => x.Src, x => x.Percent, cancellationToken);
+
+        if (!satisfactionBySrc.Any())
+            return Result.Failure<Dictionary<string, double>>("Empty List");
+
+        return Result.Success(satisfactionBySrc);
+    }
 }

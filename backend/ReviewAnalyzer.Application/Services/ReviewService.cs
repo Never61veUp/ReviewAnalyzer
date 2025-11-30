@@ -67,4 +67,7 @@ public class ReviewService : IReviewService
         await _repository.GetPercentPositiveReviewInGroup(groupId, cancellationToken);
     public async Task<Result<int>> GetLabelReviewCountInGroup(Guid groupId, CancellationToken cancellationToken, Label label) => 
         await _repository.GetLabelReviewCountInGroup(groupId, cancellationToken, label);
+    
+    public async Task<Result<Dictionary<string, double>>> GetPositiveSrcPercentList(Guid groupId, CancellationToken cancellationToken) => 
+        await _repository.GetPositiveSrcPercentList(groupId, cancellationToken);
 }

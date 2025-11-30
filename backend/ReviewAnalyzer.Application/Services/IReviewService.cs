@@ -12,4 +12,7 @@ public interface IReviewService
     Task<Result<int>> GetPositiveReviewCount(CancellationToken cancellationToken = default);
     Task<Result<double>> GetPercentPositiveReviewInGroup(Guid groupId, CancellationToken cancellationToken = default);
     Task<Result<int>> GetLabelReviewCountInGroup(Guid groupId, CancellationToken cancellationToken = default, Label label = Label.Положительный);
+
+    Task<Result<Dictionary<string, double>>> GetPositiveSrcPercentList(Guid groupId,
+        CancellationToken cancellationToken = default);
 }
