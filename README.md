@@ -1,4 +1,5 @@
 # Web Application Russian Sentiment Analysis with BERT
+https://api.reviewanalyzer.mixdev.me/scalar/v1
 [hosting: https://reviewanalyzer.mixdev.me/](https://reviewanalyzer.mixdev.me/)
 ## Структура
 **[/backend]()** - бэкэнд для веб приложения, обеспечивающее хранение отзывов их анализ и сообщение с сервером модели.
@@ -113,6 +114,3 @@ ReviewAnalyzer.PostgreSql   → EF Core, DbContext, Entity-конфигурац�
 - **Чернихов Георгий Павлович**- Ml разработчик
 - **Яблонский Алексей Николаевич** - Backend разработчик
 - **Путилова Александра Олеговна**- Frontend разработчик
-
-# Документация
-https://api.reviewanalyzer.mixdev.me/scalar/v1
