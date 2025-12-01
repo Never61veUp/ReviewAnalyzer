@@ -20,7 +20,7 @@ public class ProcessReview : IProcessReview
     {
         _http = http;
         _logger = logger;
-        _http.BaseAddress = new Uri("https://model.ru.tuna.am/");
+        _http.BaseAddress = new Uri("http://localhost:5050");
     }
 
     public async Task<Result<byte[]>> AnalyzeCsvAsync(byte[] csvBytes, string fileName, CancellationToken cancellationToken)

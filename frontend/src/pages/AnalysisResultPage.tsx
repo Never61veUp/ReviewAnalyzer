@@ -107,7 +107,7 @@ export default function AnalysisResultPage() {
   const handleExport = async (groupId: string, groupName: string) => {
     try {
       const response = await fetch(
-        `https://api.reviewanalyzer.mixdev.me/Review/export-stream?groupId=${groupId}`
+        `http://localhost:8080/Review/export-stream?groupId=${groupId}`
       );
       if (!response.ok) throw new Error("Ошибка при экспорте CSV");
       const csv = await response.text();

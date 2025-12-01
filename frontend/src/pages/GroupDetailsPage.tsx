@@ -36,7 +36,7 @@ export default function GroupDetailsPage() {
                 setReviews(Array.isArray(res) ? res : []);
 
                 const toneRes = await fetch(
-                    `https://api.reviewanalyzer.mixdev.me/Review/review-src-positive-percent${id}`
+                    `http://localhost:8080/Review/review-src-positive-percent${id}`
                 );
                 if (!toneRes.ok) {
                     console.error("Ошибка загрузки тональности:", toneRes.status);
@@ -63,7 +63,7 @@ export default function GroupDetailsPage() {
             try {
                 const fetchCount = async (label: number) => {
                     const res = await fetch(
-                        `https://api.reviewanalyzer.mixdev.me/Review/review-label-count-in-group${id}?label=${label}`
+                        `http://localhost:8080/Review/review-label-count-in-group${id}?label=${label}`
                     );
                     if (!res.ok) return 0;
                     const data = await res.json();
@@ -95,7 +95,7 @@ export default function GroupDetailsPage() {
         if (!id) return;
         try {
             const res = await fetch(
-                `https://api.reviewanalyzer.mixdev.me/Review/export-stream?groupId=${id}`
+                `http://localhost:8080/Review/export-stream?groupId=${id}`
             );
             if (!res.ok) throw new Error("Ошибка при экспорте CSV");
             const csv = await res.text();

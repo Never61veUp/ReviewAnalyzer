@@ -28,7 +28,7 @@ export default function SingleAnalysis({ textInput, setTextInput }: Props) {
 
     try {
       const response = await fetch(
-        `https://api.reviewanalyzer.mixdev.me/Review/review-one?review=${encodeURIComponent(textInput)}`
+        `http://localhost:8080/Review/review-one?review=${encodeURIComponent(textInput)}`
       );
       const data = await response.json();
 

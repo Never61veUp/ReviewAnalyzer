@@ -5,13 +5,13 @@ export interface ReviewCountResponse {
 }
 
 
-export const BASE_URL = "https://api.reviewanalyzer.mixdev.me";
+export const BASE_URL = "http://localhost:8080/";
 
 export async function uploadFile(file: File): Promise<FileUploadResponse> {
   const formData = new FormData();
   formData.append("file", file);
 
-  const res = await fetch(`https://api.reviewanalyzer.mixdev.me/api/Group/upload`, {
+  const res = await fetch(`http://localhost:8080/api/Group/upload`, {
     method: "POST",
     body: formData,
   });
@@ -82,7 +82,7 @@ export async function exportReviews(groupId: string): Promise<Blob> {
 export async function fetchReviewCount(): Promise<ReviewCountResponse> {
   try {
     const response = await fetch(
-      "https://api.reviewanalyzer.mixdev.me/Review/review-count"
+      "http://localhost:8080/Review/review-count"
     );
     if (!response.ok) throw new Error("Ошибка при получении числа отзывов");
 
@@ -100,7 +100,7 @@ export interface ReviewPositiveCountResponse {
 
 export async function fetchPositiveReviewCount(): Promise<ReviewPositiveCountResponse> {
   try {
-    const response = await fetch("https://api.reviewanalyzer.mixdev.me/Review/review-positive-count");
+    const response = await fetch("http://localhost:8080/Review/review-positive-count");
     if (!response.ok) throw new Error("Ошибка при получении числа позитивных отзывов");
 
     const data = await response.json();

@@ -9,7 +9,7 @@
     ports:
       - "8080:8080"
     depends_on:
-      - postgres
+      - postgres-migrations
     environment:
       ConnectionStrings__Postgres: "Host=postgres;Port=5432;Database=reviewdb;Username=supersecretuser;Password=S0m3$tr0ngP@ssw0rd!"
 
@@ -22,4 +22,33 @@
       POSTGRES_DB: "reviewdb"
     ports:
       - "5432:5432"
+  frontend:
+    build:
+      context: ../frontend
+      dockerfile: Dockerfile
+    ports:
+      - "5173:5173"
+        
+  postgres-migrations:
+    image: reviewanalyzer.postgresql.migrationservice
+    build:
+      context: .
+      dockerfile: ReviewAnalyzer.PostgreSql.MigrationService/Dockerfile
+    container_name: reviewanalyzer-postgres-migrations
+    depends_on:
+      - postgres
+    environment:
+      ConnectionStrings__Postgres: "Host=postgres;Port=5432;Database=reviewdb;Username=supersecretuser;
+      Password=S0m3$tr0ngP@ssw0rd!"
+    restart: no
+    
+  ml-model:
+    image: ml-model
+    build:
+      context: ../ml
+      dockerfile: Dockerfile
+    container_name: ml-model
+    restart: unless-stopped
+    ports:
+      - "5050:5050"
 

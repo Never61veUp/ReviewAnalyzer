@@ -31,7 +31,7 @@ export default function PositivePercentage({ groupId, onComplete }: Props) {
 
       try {
         const res = await fetch(
-          `https://api.reviewanalyzer.mixdev.me/Review/review-percent-positive-in-group${groupId}?neutralCoeff=0`
+          `http://localhost:8080/Review/review-percent-positive-in-group${groupId}?neutralCoeff=0`
         );
 
         if (!res.ok) throw new Error(`Ошибка запроса: ${res.status}`);

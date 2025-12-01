@@ -33,7 +33,7 @@ export default function Home() {
 
   const fetchLabelCount = async (label: number) => {
     try {
-      const resp = await fetch(`https://api.reviewanalyzer.mixdev.me/Review/review-label-count?label=${label}`);
+      const resp = await fetch(`http://localhost:8080/Review/review-label-count?label=${label}`);
       if (!resp.ok) return 0;
       const data = await resp.json();
       return data.result ?? 0;
